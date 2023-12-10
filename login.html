@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK陪玩电竞</title>
+    <link rel="stylesheet" href="../layui/css/bootstrap.min.css">
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            background: linear-gradient(135deg, #FFC0CB 30%, #FFB6C1 90%);
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .containers {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background: url('assets/bj.png') no-repeat;
+            background-size: 100% 100%
+        }
+
+        .form-container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-box {
+            margin-left: 22%;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            transition: all 0.3s ease-in-out;
+            bottom: 20px;
+        }
+
+        .form-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .form-input {
+            border-radius: .25rem;
+            margin-bottom: 1rem;
+            border: 2px solid #ffcae1;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .form-input:focus {
+            border-color: #FF69B4;
+            box-shadow: 0 0 8px 0 rgba(255, 105, 180, 0.5);
+        }
+
+        .submit-button {
+            background-color: #FF69B4;
+            border: none;
+            border-radius: .25rem;
+            padding: .5rem 5rem;
+            margin-bottom: 1rem;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #ff85a2;
+            box-shadow: 0 4px 8px rgba(255, 105, 180, 0.6);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="containers">
+        <div class="container-fluid form-container">
+            <div class="form-box">
+                <form method="post" action="controller/class_admin_login.php">
+                    <div class="form-group">
+                        <input type="text" class="form-control form-input" name="username" placeholder="账号" autofocus>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control form-input" name="password" placeholder="密码">
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" class="btn submit-button form-control">登录</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="error-message" style="display:none;color:red;"></div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $(document).ready(function() {
+    $('form').on('submit', function(e) {
+        e.preventDefault();
+         var form = $(this);
+        $.ajax({
+            type: "POST",
+            url: "controller/class_admin_login.php",
+            data: $(this).serialize(),
+            dataType: "json",
+           success: function(response) {
+    if (response.error) {
+        swal("出错了！", response.message, "error"); // 使用 SweetAlert 显示错误信息
+    } else {
+        window.location.href = response.redirect;
+    }
+},
+            error: function() {
+                $('#error-message').text('发生错误，请稍后重试。').show();
+            }
+        });
+    });
+});
+        $(document).ready(function () {
+            // Button hover and active state animation
+            $('.submit-button').on('mouseenter', function () {
+                $(this).animate({ opacity: 0.9 }, 200);
+            }).on('mouseleave', function () {
+                $(this).animate({ opacity: 1 }, 200);
+            }).on('mousedown', function () {
+                $(this).animate({ opacity: 0.8 }, 100);
+            }).on('mouseup', function () {
+                $(this).animate({ opacity: 0.9 }, 100);
+            });
+
+            // Form input focus animation improved
+            $('.form-input').on('focusin', function () {
+                $(this).animate({ borderColor: '#FF69B4' }, 300);
+            }).on('focusout', function () {
+                $(this).animate({ borderColor: '#ffcae1' }, 300);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
